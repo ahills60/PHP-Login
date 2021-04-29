@@ -1,15 +1,18 @@
 <?php
 require '../../vendor/autoload.php';
+require_once '../../vendor/ezyang/htmlpurifier/library/HTMLPurifier.auto.php';
 try {
     //Pull username, generate new ID and hash password
     $newid = uniqid(rand(), false);
-    $newuser = str_replace(' ', '', $_POST['newuser']);
+    $purifier = new HTMLPurifier();
+    $dirtynewuser = str_replace(' ', '', $_POST['newuser']);
+    $newuser = $purifier->purify($dirtynewuser);
 
     if ($newuser == '') {
         throw new Exception('<div class="alert alert-danger alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>Must enter a username</div><div id="returnVal" style="display:none;">false</div>');
     }
 
-    $newemail = $_POST['email'];
+    $newemail = $purifier->purify($_POST['email']);
     $pw1 = $_POST['password1'];
     $pw2 = $_POST['password2'];
     $userarr = array(array('id'=>$newid, 'username'=>$newuser, 'email'=>$newemail, 'pw'=>$pw1));
