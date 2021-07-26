@@ -35,9 +35,9 @@ class MailHandler extends AppConfig
     public function sendMail($userarr, $type)
     {
         $resp = array();
-        require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+        require_once $this->base_dir.'/vendor/autoload.php';
 
-        $mail = new \PHPMailer;
+        $mail = new \PHPMailer\PHPMailer\PHPMailer;
         $mail->isHTML(true);
         $mail->CharSet = "text/html; charset=UTF-8;";
         $mail->WordWrap = 80;
@@ -124,7 +124,7 @@ class MailHandler extends AppConfig
             $resp['message'] = '';
 
             return $resp;
-        } catch (\phpmailerException $e) {
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
             $resp['status'] = false;
             $resp['message'] = $e->errorMessage();
 
@@ -144,10 +144,10 @@ class MailHandler extends AppConfig
     public function sendResetMail($reset_url, $to_email, $username)
     {
         $resp = array();
-        require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+        require_once $this->base_dir.'/vendor/autoload.php';
 
         try {
-            $mail = new \PHPMailer(true);
+            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
             $mail->isHTML(true);
             $mail->CharSet = "text/html; charset=UTF-8;";
             $mail->WordWrap = 80;
@@ -203,7 +203,7 @@ class MailHandler extends AppConfig
             $resp['status'] = true;
             $resp['message'] = "Password reset sent! Check your email";
             return $resp;
-        } catch (\phpmailerException $e) {
+        } catch (\PHPMailer\PHPMailer\Exception $e) {
             $resp['status'] = false;
             $resp['message'] = $e->errorMessage();
             return $resp;
@@ -402,9 +402,9 @@ class MailHandler extends AppConfig
             if ($this->mail_server_type == 'smtp') {
                 date_default_timezone_set('Etc/UTC');
 
-                require_once $this->base_dir.'/vendor/phpmailer/phpmailer/PHPMailerAutoload.php';
+                require_once $this->base_dir.'/vendor/autoload.php';
 
-                $smtp = new \SMTP;
+                $smtp = new \PHPMailer\PHPMailer\SMTP;
                 //Enable connection-level debug output
                 //$smtp->do_debug = SMTP::DEBUG_CONNECTION;
                 try {
